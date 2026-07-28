@@ -348,7 +348,7 @@ export function HeroScrub({
       ref={sectionRef}
       aria-label="Cinematic roofing hero"
       className="relative w-full overflow-clip bg-black text-white"
-      style={{ height: 'min(420vh, 260rem)' }}
+      style={{ height: reduced === true ? '100svh' : 'min(420vh, 260rem)' }}
     >
       <div className="sticky top-0 flex h-[100svh] w-full flex-col items-center justify-center overflow-hidden">
         <div
@@ -379,7 +379,7 @@ export function HeroScrub({
             aria-hidden
             className="whitespace-nowrap font-black uppercase"
             style={{
-              fontSize: 'clamp(3.75rem, 12vw, 11rem)',
+              fontSize: 'clamp(2.75rem, 12vw, 11rem)',
               lineHeight: 0.85,
               letterSpacing: '-0.04em',
             }}
@@ -422,7 +422,7 @@ export function HeroScrub({
             aria-hidden
             className="whitespace-nowrap font-black uppercase"
             style={{
-              fontSize: 'clamp(3.75rem, 12vw, 11rem)',
+              fontSize: 'clamp(2.75rem, 12vw, 11rem)',
               lineHeight: 0.85,
               letterSpacing: '-0.04em',
             }}

@@ -24,6 +24,23 @@ describe('HeroScrub', () => {
     expect(container.querySelector('canvas')).not.toBeInTheDocument()
   })
 
+  it('uses a single-viewport hero when resolved motion preference is reduced', () => {
+    vi.spyOn(window, 'matchMedia').mockReturnValue({
+      matches: true,
+      media: '(prefers-reduced-motion: reduce)',
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(() => false),
+    } as MediaQueryList)
+
+    render(<HeroScrub frameCount={1} frameUrl={() => '/roof-hero.webp'} fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
+
+    expect(screen.getByRole('region', { name: 'Cinematic roofing hero' })).toHaveStyle({ height: '100svh' })
+  })
+
   it('does not preload frames when resolved motion preference is reduced', () => {
     const imageConstructor = vi.fn()
     vi.stubGlobal('Image', imageConstructor)
