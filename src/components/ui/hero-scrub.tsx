@@ -21,7 +21,7 @@ export type HeroScrubProps = {
 }
 
 function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false)
+  const [reduced, setReduced] = useState<boolean | null>(null)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -60,9 +60,10 @@ export function HeroScrub({
   const [framesOk, setFramesOk] = useState(true)
   const [aspect, setAspect] = useState(defaultAspect)
   const reduced = usePrefersReducedMotion()
+  const motionAllowed = reduced === false
 
   useEffect(() => {
-    if (reduced) return
+    if (!motionAllowed) return
 
     let cancelled = false
     let errored = 0
@@ -134,10 +135,10 @@ export function HeroScrub({
       })
       if (imagesRef.current === images) imagesRef.current = []
     }
-  }, [defaultAspect, frameCount, frameUrl, reduced])
+  }, [defaultAspect, frameCount, frameUrl, motionAllowed])
 
   useEffect(() => {
-    if (reduced || !ready || !framesOk) return
+    if (!motionAllowed || !ready || !framesOk) return
 
     const image = imagesRef.current[0]
     if (!image?.naturalWidth || !image.naturalHeight) return
@@ -154,10 +155,10 @@ export function HeroScrub({
     context.drawImage(image, 0, 0)
     lastDrawnRef.current = 0
     setCanvasReady(true)
-  }, [framesOk, ready, reduced])
+  }, [framesOk, motionAllowed, ready])
 
   useEffect(() => {
-    if (reduced) return
+    if (!motionAllowed) return
 
     gsap.registerPlugin(ScrollTrigger)
     const context = gsap.context(() => {
@@ -187,10 +188,10 @@ export function HeroScrub({
     }, sectionRef)
 
     return () => context.revert()
-  }, [reduced])
+  }, [motionAllowed])
 
   useEffect(() => {
-    if (reduced || !canvasReady || !framesOk) return
+    if (!motionAllowed || !canvasReady || !framesOk) return
 
     const section = sectionRef.current
     if (!section) return
@@ -338,9 +339,9 @@ export function HeroScrub({
       window.removeEventListener('resize', refreshScrollState)
       context.revert()
     }
-  }, [aspect, canvasReady, frameCount, framesOk, reduced])
+  }, [aspect, canvasReady, frameCount, framesOk, motionAllowed])
 
-  const showCanvas = canvasReady && framesOk && !reduced
+  const showCanvas = canvasReady && framesOk && motionAllowed
 
   return (
     <section
@@ -399,7 +400,7 @@ export function HeroScrub({
               aria-hidden
               className="pointer-events-none absolute inset-0 z-20 shadow-[inset_0_0_120px_rgba(0,0,0,0.45)]"
             />
-            {ready && framesOk && !reduced ? (
+            {ready && framesOk && motionAllowed ? (
               <canvas
                 ref={canvasRef}
                 aria-hidden
