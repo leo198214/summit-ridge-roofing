@@ -1,1 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
 @import "tailwindcss";
+
+:root {
+  --deep-slate: #111a1f;
+  --dark-slate: #18242a;
+  --warm-clay: #c47858;
+  --warm-clay-hover: #d58b69;
+  --off-white: #f6f4ef;
+  --muted-text: #c9d0d3;
+  --page-gutter: clamp(1rem, 4vw, 4.5rem);
+  --content-width: 75rem;
+  color: var(--off-white);
+  background: var(--deep-slate);
+  font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #111a1f;
+}
+
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: clip;
+  background: var(--deep-slate);
+  color: var(--muted-text);
+  font-family: 'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Lexend, 'Segoe UI', Arial, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid #f0b69b;
+  outline-offset: 3px;
+}
+
+.page-container {
+  width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-width));
+  margin-inline: auto;
+}
+
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+img,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
