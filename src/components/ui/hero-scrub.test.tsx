@@ -12,4 +12,9 @@ describe('HeroScrub', () => {
     render(<HeroScrub frameCount={1} frameUrl={() => '/roof-hero.webp'} fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
     expect(screen.queryByRole('heading', { name: 'Protection' })).not.toBeInTheDocument()
   })
+
+  it('does not mount the canvas before the first frame is ready', () => {
+    const { container } = render(<HeroScrub frameCount={1} frameUrl={() => '/roof-hero.webp'} fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
+    expect(container.querySelector('canvas')).not.toBeInTheDocument()
+  })
 })

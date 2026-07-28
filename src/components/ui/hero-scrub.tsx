@@ -56,6 +56,7 @@ export function HeroScrub({
   const titleBottomRef = useRef<HTMLHeadingElement>(null)
 
   const [ready, setReady] = useState(false)
+  const [canvasReady, setCanvasReady] = useState(false)
   const [framesOk, setFramesOk] = useState(true)
   const [aspect, setAspect] = useState(defaultAspect)
   const reduced = usePrefersReducedMotion()
@@ -70,6 +71,7 @@ export function HeroScrub({
     const errorThreshold = Math.min(5, frameCount)
 
     setReady(false)
+    setCanvasReady(false)
     setFramesOk(true)
     setAspect(defaultAspect)
     lastDrawnRef.current = -1
@@ -78,17 +80,11 @@ export function HeroScrub({
     const markFirstFrameReady = (image: HTMLImageElement) => {
       if (cancelled) return
 
-      const canvas = canvasRef.current
-      const context = canvas?.getContext('2d')
-      if (!canvas || !context || !image.naturalWidth || !image.naturalHeight) {
+      if (!image.naturalWidth || !image.naturalHeight) {
         setFramesOk(false)
         return
       }
 
-      canvas.width = image.naturalWidth
-      canvas.height = image.naturalHeight
-      context.drawImage(image, 0, 0)
-      lastDrawnRef.current = 0
       setAspect(image.naturalWidth / image.naturalHeight)
       setReady(true)
     }
@@ -141,6 +137,26 @@ export function HeroScrub({
   }, [defaultAspect, frameCount, frameUrl, reduced])
 
   useEffect(() => {
+    if (reduced || !ready || !framesOk) return
+
+    const image = imagesRef.current[0]
+    if (!image?.naturalWidth || !image.naturalHeight) return
+
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context) {
+      setFramesOk(false)
+      return
+    }
+
+    canvas.width = image.naturalWidth
+    canvas.height = image.naturalHeight
+    context.drawImage(image, 0, 0)
+    lastDrawnRef.current = 0
+    setCanvasReady(true)
+  }, [framesOk, ready, reduced])
+
+  useEffect(() => {
     if (reduced) return
 
     gsap.registerPlugin(ScrollTrigger)
@@ -174,7 +190,7 @@ export function HeroScrub({
   }, [reduced])
 
   useEffect(() => {
-    if (reduced || !ready || !framesOk) return
+    if (reduced || !canvasReady || !framesOk) return
 
     const section = sectionRef.current
     if (!section) return
@@ -322,9 +338,9 @@ export function HeroScrub({
       window.removeEventListener('resize', refreshScrollState)
       context.revert()
     }
-  }, [aspect, frameCount, framesOk, ready, reduced])
+  }, [aspect, canvasReady, frameCount, framesOk, reduced])
 
-  const showCanvas = ready && framesOk && !reduced
+  const showCanvas = canvasReady && framesOk && !reduced
 
   return (
     <section
@@ -383,7 +399,7 @@ export function HeroScrub({
               aria-hidden
               className="pointer-events-none absolute inset-0 z-20 shadow-[inset_0_0_120px_rgba(0,0,0,0.45)]"
             />
-            {framesOk && !reduced ? (
+            {ready && framesOk && !reduced ? (
               <canvas
                 ref={canvasRef}
                 aria-hidden
