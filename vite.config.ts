@@ -8,6 +8,8 @@ import { configDefaults } from 'vitest/config'
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
+  // GitHub Pages serves this project from its repository path in production.
+  base: process.env.GITHUB_ACTIONS ? '/summit-ridge-roofing/' : '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
