@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import { SiteHeader } from './components/layout/site-header'
 import { AssessmentForm } from './components/sections/assessment-form'
 import { Faq } from './components/sections/faq'
@@ -8,8 +7,6 @@ import { Services } from './components/sections/services'
 import { HeroScrub } from './components/ui/hero-scrub'
 
 export default function App() {
-  const roofFrameUrl = useCallback(() => '/roof-hero.webp', [])
-
   return (
     <div id="top" className="min-h-screen bg-[#111a1f]">
       <SiteHeader />
@@ -17,13 +14,11 @@ export default function App() {
       <main>
         <HeroIntro />
         <HeroScrub
-          frameCount={1}
-          frameUrl={roofFrameUrl}
+          videoSrc="/roofing-aerial.mp4"
           fallbackSrc="/roof-hero.webp"
           fallbackAlt="A freshly completed charcoal shingle roof on a suburban home"
           titleTop="Protection"
           titleBottom="Elevated"
-          accentHex="#9A4E32"
         />
         <Services />
         <Process />

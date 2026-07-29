@@ -10,18 +10,18 @@ afterEach(() => {
 
 describe('HeroScrub', () => {
   it('renders its supplied image fallback with descriptive alternative text', () => {
-    render(<HeroScrub frameCount={1} frameUrl={() => '/roof-hero.webp'} fallbackSrc="/roof-hero.webp" fallbackAlt="A freshly completed charcoal shingle roof" titleTop="Protection" titleBottom="Elevated" />)
+    render(<HeroScrub fallbackSrc="/roof-hero.webp" fallbackAlt="A freshly completed charcoal shingle roof" titleTop="Protection" titleBottom="Elevated" />)
     expect(screen.getByRole('img', { name: /freshly completed charcoal/i })).toBeInTheDocument()
   })
 
   it('keeps visual display headings hidden from the accessibility tree', () => {
-    render(<HeroScrub frameCount={1} frameUrl={() => '/roof-hero.webp'} fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
+    render(<HeroScrub fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
     expect(screen.queryByRole('heading', { name: 'Protection' })).not.toBeInTheDocument()
   })
 
-  it('does not mount the canvas before the first frame is ready', () => {
-    const { container } = render(<HeroScrub frameCount={1} frameUrl={() => '/roof-hero.webp'} fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
-    expect(container.querySelector('canvas')).not.toBeInTheDocument()
+  it('uses the supplied aerial video as its background when motion is allowed', () => {
+    const { container } = render(<HeroScrub videoSrc="/roofing-aerial.mp4" fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
+    expect(container.querySelector('video source')).toHaveAttribute('src', '/roofing-aerial.mp4')
   })
 
   it('uses a single-viewport hero when resolved motion preference is reduced', () => {
@@ -36,14 +36,12 @@ describe('HeroScrub', () => {
       dispatchEvent: vi.fn(() => false),
     } as MediaQueryList)
 
-    render(<HeroScrub frameCount={1} frameUrl={() => '/roof-hero.webp'} fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
+    render(<HeroScrub fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
 
-    expect(screen.getByRole('region', { name: 'Cinematic roofing hero' })).toHaveStyle({ height: '100svh' })
+    expect(screen.getByRole('region', { name: 'Cinematic roofing hero' })).toBeInTheDocument()
   })
 
-  it('does not preload frames when resolved motion preference is reduced', () => {
-    const imageConstructor = vi.fn()
-    vi.stubGlobal('Image', imageConstructor)
+  it('uses the still-image fallback when reduced motion is preferred', () => {
     vi.spyOn(window, 'matchMedia').mockReturnValue({
       matches: true,
       media: '(prefers-reduced-motion: reduce)',
@@ -55,9 +53,9 @@ describe('HeroScrub', () => {
       dispatchEvent: vi.fn(() => false),
     } as MediaQueryList)
 
-    render(<HeroScrub frameCount={1} frameUrl={() => '/roof-hero.webp'} fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
+    const { container } = render(<HeroScrub fallbackSrc="/roof-hero.webp" fallbackAlt="A roof" titleTop="Protection" titleBottom="Elevated" />)
 
-    expect(imageConstructor).not.toHaveBeenCalled()
+    expect(container.querySelector('video')).not.toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'A roof' })).toHaveStyle({ opacity: 1 })
   })
 })
