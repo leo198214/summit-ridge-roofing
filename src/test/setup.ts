@@ -4,6 +4,16 @@ Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
   value: () => ({ drawImage: () => undefined }),
 })
 
+Object.defineProperty(HTMLMediaElement.prototype, 'play', {
+  configurable: true,
+  value: () => Promise.resolve(),
+})
+
+Object.defineProperty(HTMLMediaElement.prototype, 'pause', {
+  configurable: true,
+  value: () => undefined,
+})
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: (query: string) => ({

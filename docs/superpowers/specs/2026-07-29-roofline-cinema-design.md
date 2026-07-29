@@ -6,7 +6,7 @@ Replace the broken image-led "Protection Elevated" visual with an aerial-roof vi
 
 ## Direction
 
-Use a cinematic, full-bleed aerial video within a single responsive stage. Keep Summit Ridge's deep-slate and warm-clay palette rather than adopting the unrelated pink palette returned by the generic design-system search. The overlay uses one concise eyebrow, the two-line "Protection / Elevated" headline, supporting copy, and a direct assessment CTA. Contrast is secured by layered dark gradients rather than translucent cards.
+Use a cinematic, full-bleed aerial video within a single responsive stage. Keep Summit Ridge's deep-slate and warm-clay palette rather than adopting the unrelated pink palette returned by the generic design-system search. The overlay uses the two-line "Protection / Elevated" headline, supporting copy, and a direct assessment CTA. Contrast is secured by layered dark gradients rather than translucent cards.
 
 ## Asset and delivery behavior
 

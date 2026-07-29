@@ -6,6 +6,8 @@ import { Process } from './components/sections/process'
 import { Services } from './components/sections/services'
 import { HeroScrub } from './components/ui/hero-scrub'
 
+const assetUrl = (asset: string) => `${import.meta.env.BASE_URL}${asset}`
+
 export default function App() {
   return (
     <div id="top" className="min-h-screen bg-[#111a1f]">
@@ -14,8 +16,8 @@ export default function App() {
       <main>
         <HeroIntro />
         <HeroScrub
-          videoSrc="/roofing-aerial.mp4"
-          fallbackSrc="/roof-hero.webp"
+          videoSrc={assetUrl('roofing-aerial.mp4')}
+          fallbackSrc={assetUrl('roof-hero.webp')}
           fallbackAlt="A freshly completed charcoal shingle roof on a suburban home"
           titleTop="Protection"
           titleBottom="Elevated"
