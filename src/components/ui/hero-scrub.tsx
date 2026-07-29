@@ -80,7 +80,6 @@ export function HeroScrub({
       {canPlayVideo ? (
         <video
           ref={videoRef}
-          autoPlay
           muted
           loop
           playsInline

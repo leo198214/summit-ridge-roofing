@@ -25,6 +25,7 @@ describe('HeroScrub', () => {
     expect(container.querySelector('video source')).toHaveAttribute('src', '/summit-ridge-roofing/roofing-aerial.mp4')
     expect(container.querySelector('video')).toHaveAttribute('poster', '/summit-ridge-roofing/roof-hero.webp')
     expect(container.querySelector('video')).toHaveAttribute('preload', 'none')
+    expect(container.querySelector('video')).not.toHaveAttribute('autoplay')
   })
 
   it('uses the still image when the aerial video cannot play', async () => {
